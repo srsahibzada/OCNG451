@@ -1,30 +1,30 @@
 function dy = SimpleOde(t,temp)
 %
-lat = 0;   % Set the latitude here
-%
 
-declination = 23.5;
+%
+radians = pi / 180; % for cleanliness, introduce radians conversion
+declination = 23.5 * radians;
+lat = -30 * radians;   % Set the latitude here
 eccentricity = 0.016;
-radians = 2*pi/360;
 frequency = 2*pi/365.25;
 solar_intensity = 1370/pi;
-sigma = 5.67*10^-8;
-radius_of_earth = (6371*1000).^2;
-density = 1; % density of water is 1000 kgm^-3
-sphc = 4.186;
-hmix = 1000;
+sigma = 5.67*10^-8; % watts / m^2 * K^4
+sphc = 4186; % joule * kgram / kelvin
+hmix = 100.0; % m
+density = 1025; % kgram / m^3
+time_units = 60*60*24;
 %
 
 % Specify Qin (heating) and Qout (cooling) here
 
 %
-solar_angle = cos((lat*(pi/180) - (declination*(pi/180)) * cos(frequency*(t-170))));
-distance_from_sun =  (1-eccentricity * cos(frequency * t - 10))^2;
-Qin = solar_intensity*(solar_angle / distance_from_sun);
-Qout = sigma*temp.^4 * 4*pi*radius_of_earth;
+solar_angle = cos(lat - declination * cos(frequency*(t-170)) );
+distance_from_sun =  (1 - eccentricity * cos(frequency * (t - 10)))^2;
+Qin = solar_intensity*solar_angle / distance_from_sun;
+Qout = sigma*temp.^4;
 %
 
-dy = (Qin-Qout)*(1/(density * sphc * hmix));
+dy = ((Qin-Qout)*time_units)/((density * sphc * hmix)/1);
 %
 
 
