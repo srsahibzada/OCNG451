@@ -2,11 +2,11 @@ clear all;
 
 close all;
 
-tspan = [0:1:10*365];
+tspan = [0.001:1:10*365];
 
 %
 
-t0 = 0; %initial condition here
+t0 = 273; %initial condition here
 
 %
 
@@ -15,7 +15,6 @@ t0 = 0; %initial condition here
 %
 
 plot(t,temp);
-title('insert title here');
+title('Variation of Temperature (K) with Time using the Relationship Between Solar Flux and Temperature');
 xlabel('time');
 ylabel('temp');
-
